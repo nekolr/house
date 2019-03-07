@@ -8,12 +8,17 @@ name = "aliyun"
 url = "https://mirrors.aliyun.com/pypi/simple"
 verify_ssl = true
 
+[[source]]
+name = "tsinghua"
+url = "https://pypi.tuna.tsinghua.edu.cn/simple"
+verify_ssl = true
+
 [dev-packages]
 
 [packages]
-requests-html = {version = "*", index = "aliyun"}
-aiomysql = {version = "*", index = "aliyun"}
-aiohttp = {version = "*", index = "aliyun"}
+requests-html = {version = "*", index = "tsinghua"}
+aiomysql = {version = "*", index = "tsinghua"}
+aiohttp = {version = "*", index = "tsinghua"}
 
 [requires]
 python_version = "3.7"
