@@ -1,10 +1,8 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-from .base import Parser
 
 
-class LianJia(Parser):
-
+class Parser(object):
     def parse(self):
         pass
 

@@ -1,10 +1,9 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-from abc import ABC, abstractmethod
+from .base import Parser
 
 
-class Parser(ABC):
-    @abstractmethod
+class LianJia(Parser):
     def parse(self):
         pass
 

@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 from requests_html import AsyncHTMLSession
+from analyzer.lian_jia import LianJia
 
 
 def get_html(url):
@@ -15,6 +16,7 @@ def start():
     爬虫入口
     :return:
     """
+    # get_html('https://bj.lianjia.com/ershoufang')
 
 
 if __name__ == '__main__':
