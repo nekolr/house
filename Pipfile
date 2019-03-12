@@ -18,7 +18,6 @@ verify_ssl = true
 [packages]
 requests-html = {version = "*", index = "tsinghua"}
 aiomysql = {version = "*", index = "tsinghua"}
-aiohttp = {version = "*", index = "tsinghua"}
 
 [requires]
 python_version = "3.7"

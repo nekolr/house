@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 from .base import Parser
-from utils.event_loop_utils import put_event_loop
+from utils.event_loop_utils import put_tasks
 from model.lianjia import LianJia
 
 
@@ -13,19 +13,26 @@ class LianJiaParser(Parser):
     def __init__(self, url):
         super().__init__(url)
         # 是否需要下钻获取详细信息
-        self.requireDetail = True
+        self.requireDetail = False
 
     def parse(self):
-        results = put_event_loop([Parser.get_request], [self.url])
+        results = put_tasks([Parser.get_request], [self.url])
+        models = list()
         for result in results:
+            # 获取列表
             lis = _get_list(result.html)
             for li in lis:
+                # 过滤广告
                 if _filter_useless(li):
                     model = LianJia()
+                    # 获取外部的信息
                     _get_outside(li, model)
-                    # 下钻详情页
                     if self.requireDetail:
+                        # 下钻详情页
                         _get_detail(model.houseLink, model)
+                        print(model)
+                    models.append(model)
+        return models
 
 
 def _get_list(html):
@@ -70,12 +77,17 @@ def _get_outside(one, model):
     house_total_price = post_price.find('div.totalPrice span', first=True).text
     house_unit_price = post_price.find('div.unitPrice span', first=True).text
 
+    # 图片信息等
+    post_image = one.find('a.noresultRecommend.img img.lj-lazy', first=True)
+    house_image = post_image.attrs.get('data-original')
+
     model.houseName = house_name
     model.houseLink = house_link
     model.houseLocation = house_location
     model.houseArea = house_area
     model.totalPrice = house_total_price
     model.unitPrice = house_unit_price
+    model.houseImage = house_image
 
 
 def _get_detail(url, model):
@@ -85,15 +97,32 @@ def _get_detail(url, model):
     :param model: 实体
     :return:
     """
-    results = put_event_loop([Parser.get_request], [url])
+    results = put_tasks([Parser.get_request], [url])
     for result in results:
         html = result.html
         d = dict()
         lis = html.find('#introduction div div.introContent div.base div.content ul > li')
-        for li in lis:
-            # 详细信息
-            item = li.text
-            # 属性名称
-            prop_name = item[:4]
-            prop_value = item[4:]
-            d[prop_name] = prop_value
+        _collect_details(lis, d)
+        lis = html.find('div#introduction div div.introContent div.transaction div.content ul > li')
+        _collect_details(lis, d)
+        # 下面根据每个实体的映射去收集到的字典中寻找对应的键值
+        for k, v in model.mapping.items():
+            if k in d:
+                setattr(model, v, d[k])
+
+
+def _collect_details(lis, dic):
+    """
+    收集详情信息
+    :param lis: 详情项
+    :param dic: 收集的容器，是一个字典
+    :return: 收集的详情信息
+    """
+    for li in lis:
+        # 详细信息
+        item = li.text
+        # 属性名称
+        prop_name = item[:4]
+        prop_value = item[4:]
+        dic[prop_name] = prop_value.strip()
+    return dic
