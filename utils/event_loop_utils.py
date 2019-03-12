@@ -24,22 +24,6 @@ def put_tasks(tasks, args=None):
     return [r.result() for r in results]
 
 
-def put_task(task, *args):
-    """
-    将任务放入事件循环
-    :param task:
-    :param args:
-    :return:
-    """
-    loop = asyncio.get_event_loop()
-    tasks = [
-        asyncio.ensure_future(task(args))
-    ]
-    # _ 是用来过滤掉最后一个元素
-    results, _ = loop.run_until_complete(asyncio.wait(tasks))
-    return [r.result() for r in results]
-
-
 def close_event_loop():
     """
     关闭时间循环

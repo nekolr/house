@@ -2,12 +2,21 @@
 # -*- coding: utf-8 -*-
 import aiomysql
 import logging
+from config import configs
 
 
-async def create_pool(**kwargs):
+async def init():
+    """
+    初始化线程池
+    :return:
+    """
+    await create_pool(loop=None, **configs.db)
+
+
+async def create_pool(loop=None, **kwargs):
     """
     创建数据库连接池
-    :param loop:
+    :param loop: event loop
     :param kwargs: 连接池配置参数
     :return:
     """
@@ -22,7 +31,8 @@ async def create_pool(**kwargs):
         charset=kwargs.get('charset', 'utf8'),
         autocommit=kwargs.get('autocommit', True),
         maxsize=kwargs.get('maxsize', 10),
-        minsize=kwargs.get('minsize', 1)
+        minsize=kwargs.get('minsize', 1),
+        loop=loop
     )
 
 

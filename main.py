@@ -2,18 +2,19 @@
 # -*- coding: utf-8 -*-
 from resolver.lianjia import LianJiaParser
 from dao.house_dao import save_house
+from utils.event_loop_utils import put_tasks
+from utils.mysql_utils import init
 
 
-def run_task(origin, parser):
+def run_task(parser):
     """
     执行任务
-    :param origin: 数据来源
     :param parser: 解析器
     :return:
     """
     models = parser.parse()
     for model in models:
-        save_house(origin, model)
+        put_tasks([save_house], [model])
 
 
 def start():
@@ -21,7 +22,8 @@ def start():
     爬虫入口
     :return:
     """
-    run_task('链家', LianJiaParser('https://bj.lianjia.com/ershoufang/'))
+    put_tasks([init])
+    run_task(LianJiaParser('https://bj.lianjia.com/ershoufang/'))
 
 
 if __name__ == '__main__':
