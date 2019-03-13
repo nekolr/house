@@ -23,7 +23,8 @@ def start():
     :return:
     """
     put_tasks([init])
-    run_task(LianJiaParser('https://bj.lianjia.com/ershoufang/'))
+    # run_task(LianJiaParser('https://bj.lianjia.com/ershoufang/'))
+    run_task(LianJiaParser('https://bj.lianjia.com/ershoufang/tongzhou/'))
 
 
 if __name__ == '__main__':

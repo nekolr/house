@@ -36,7 +36,7 @@ async def create_pool(loop=None, **kwargs):
     )
 
 
-async def select(sql, args, size=None):
+async def select(sql, args=None, size=None):
     """
     执行查询操作
     :param sql: 查询 SQL
@@ -57,7 +57,7 @@ async def select(sql, args, size=None):
         return rs
 
 
-async def execute(sql, args, autocommit=True):
+async def execute(sql, args=None, autocommit=True):
     """
     执行插入、删除和更新操作
     :param sql: SQL 语句

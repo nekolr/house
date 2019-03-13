@@ -39,14 +39,13 @@ class House(object):
         # 房屋介绍
         self.description = ""
         # 标签
-        self.tags = []
+        self.tags = ""
 
     def __str__(self):
         return '数据来源：%s 名称：%s 区域名称：%s 地理位置：%s 链接：%s 图片：%s ' \
                '所在楼层：%s 建筑面积：%s 套内面积：%s 户型：%s 朝向：%s ' \
-               '单价：%s 总价：%s 产权年限：%s 交易权属：%s 装修情况：%s 房屋介绍：%s' % \
-               (self.origin, self.houseName, self.houseArea, self.houseLocation,
-                self.houseLink, self.houseImage, self.houseFloor,
-                self.buildingArea, self.innerArea, self.housePlan,
-                self.houseTowards, self.unitPrice, self.totalPrice,
-                self.houseProperty, self.tradingRight, self.decoration, self.description)
+               '单价：%s 总价：%s 产权年限：%s 交易权属：%s 装修情况：%s 房屋介绍：%s 标签：%s' % \
+               (self.origin, self.houseName, self.houseArea, self.houseLocation, self.houseLink,
+                self.houseImage, self.houseFloor, self.buildingArea, self.innerArea, self.housePlan,
+                self.houseTowards, self.unitPrice, self.totalPrice, self.houseProperty, self.tradingRight,
+                self.decoration, self.description, self.tags)

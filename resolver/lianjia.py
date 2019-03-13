@@ -3,6 +3,7 @@
 from .base import Parser
 from utils.event_loop_utils import put_tasks
 from model.lianjia import LianJia
+from config import configs
 
 
 class LianJiaParser(Parser):
@@ -13,10 +14,13 @@ class LianJiaParser(Parser):
     def __init__(self, url):
         super().__init__(url)
         # 是否需要下钻获取详细信息
-        self.requireDetail = False
+        self.requireDetail = True
 
     def parse(self):
-        results = put_tasks([Parser.get_request], [self.url])
+        if configs.app.get('require_proxy', True):
+            results = put_tasks([Parser.get_request_proxies], [self.url])
+        else:
+            results = put_tasks([Parser.get_request], [self.url])
         models = list()
         for result in results:
             # 获取列表
@@ -81,6 +85,12 @@ def _get_outside(one, model):
     post_image = one.find('a.noresultRecommend.img img.lj-lazy', first=True)
     house_image = post_image.attrs.get('data-original')
 
+    # 标签信息等
+    post_tags = one.find('div.info.clear div.followInfo div.tag > span')
+    tags = []
+    for tag in post_tags:
+        tags.append(tag.text)
+
     model.houseName = house_name
     model.houseLink = house_link
     model.houseLocation = house_location
@@ -88,6 +98,8 @@ def _get_outside(one, model):
     model.totalPrice = house_total_price
     model.unitPrice = house_unit_price
     model.houseImage = house_image
+    model.origin = '链家'
+    model.tags = ','.join(tags)
 
 
 def _get_detail(url, model):
@@ -97,7 +109,10 @@ def _get_detail(url, model):
     :param model: 实体
     :return:
     """
-    results = put_tasks([Parser.get_request], [url])
+    if configs.app.get('require_proxy', True):
+        results = put_tasks([Parser.get_request_proxies], [url])
+    else:
+        results = put_tasks([Parser.get_request], [url])
     for result in results:
         html = result.html
         d = dict()

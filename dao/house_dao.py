@@ -1,16 +1,16 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 from utils.mysql_utils import *
-from utils.event_loop_utils import put_tasks
 import time
+import warnings
 
 
 async def save_house(house):
     # 生成表名
-    table_name = time.strftime('%Y%m%d', time.localtime(time.time())) + 'house'
+    table_name = "T" + time.strftime('%Y%m%d', time.localtime(time.time()))
 
     create_table_sql = """CREATE TABLE IF NOT EXISTS %s (
-        id int auto_increment,
+        id int auto_increment primary key,
         origin varchar(255),
         houseName varchar(255),
         houseArea varchar(255),
@@ -31,16 +31,18 @@ async def save_house(house):
         tags varchar(255)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8;""" % table_name
 
+    # 忽略表已经存在的警告
+    warnings.filterwarnings('ignore')
     # 执行 SQL
     count = await execute(create_table_sql)
 
     insert_sql = """INSERT INTO %s (origin, houseName, houseArea, houseLocation, houseLink, 
     houseImage, houseFloor, buildingArea, innerArea, housePlan, houseTowards, unitPrice, 
     totalPrice, houseProperty, tradingRight, decoration, description, tags) VALUES 
-    (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""" % table_name
+    (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);""" % table_name
 
-    count = await execute(insert_sql, [
-        house.origin, house.houseName, house.houseArea, house.houseLocation, house.houseLink,
-        house.houseImage, house.houseFloor, house.buildingArea, house.innerArea, house.housePlan,
-        house.houseTowards, house.unitPrice, house.totalPrice, house.houseProperty, house.tradingRight,
-        house.decoration, house.description, house.tags])
+    count = await execute(insert_sql, [house.origin, house.houseName, house.houseArea, house.houseLocation,
+                                       house.houseLink, house.houseImage, house.houseFloor, house.buildingArea,
+                                       house.innerArea, house.housePlan, house.houseTowards, house.unitPrice,
+                                       house.totalPrice, house.houseProperty, house.tradingRight, house.decoration,
+                                       house.description, house.tags])
