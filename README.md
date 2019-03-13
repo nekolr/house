@@ -13,9 +13,9 @@
 - 赶集
 - 吉屋
 
-## 声明
-请勿将抓取到的数据用作商业用途。
-
 ## 感谢
 - [proxy_pool](https://github.com/jhao104/proxy_pool)
 - [async-proxy-pool](https://github.com/chenjiandongx/async-proxy-pool)
+
+## 声明
+请勿将抓取到的数据用作商业用途。
