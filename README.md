@@ -17,7 +17,7 @@
 项目本身不依赖代理池，但是如果开启代理池能够更好地防止 IP 被 ban。代理池的部署可以参考项目 [async-proxy-pool](https://github.com/chenjiandongx/async-proxy-pool)。  
 
 ```python
-$ py main.py
+py main.py
 ```
 
 ## 感谢
