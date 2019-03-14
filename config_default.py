@@ -17,10 +17,8 @@ configs = {
         'minsize': 1
     },
     # 代理池服务地址
-    # https://github.com/jhao104/proxy_pool
     # https://github.com/chenjiandongx/async-proxy-pool
     'proxy': {
-        # 'server_a': 'http://localhost:5010/get_all',
-        'server_b': 'http://localhost:3289/get/10'
+        'server_a': 'http://localhost:3289/pop'
     }
 }

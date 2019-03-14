@@ -14,10 +14,10 @@ async def get_proxy_pool():
     for k, v in configs.proxy.items():
         try:
             pool = await get_json(v)
-            if pool is not None and isinstance(pool, list):
-                return pool[0]
+            if pool is not None and isinstance(pool, dict):
+                return pool
             else:
-                return []
+                return {}
         except BaseException as e:
             logging.error(e)
             # 如果出错使用下一个服务
