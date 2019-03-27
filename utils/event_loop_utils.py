@@ -26,7 +26,7 @@ def put_tasks(tasks, args=None):
 
 def close_event_loop():
     """
-    关闭时间循环
+    关闭事件循环
     :return:
     """
     loop = asyncio.get_event_loop()
